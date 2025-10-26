@@ -13,6 +13,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="assets/css/style.css"/>
+    <link rel="stylesheet" href="assets/css/swiper-bundle.min.css">
 </head>
 
 <body>
@@ -88,132 +89,301 @@
             </div>
         </section>
 
-        <!-- Courses -->
+        <!--------------- COURSES SECTION ----->
         <section class="courses section" id="courses">
             <h2 class="section__title">Featured Courses</h2>
-            <div class="courses__container">
-                <div class="course-item">
-                    <img src="assets/img/aaa.png" alt="Course 1" class="course-image"/>
-                    <h3 class="course-title">Introduction to Web Development</h3>
-                    <p class="course-description">Learn the basics of HTML, CSS, and JavaScript to build your own websites.</p>
-                    <a href="#" class="button">Enroll Now</a>
+
+            <div class="courses__container container">
+                <div class="courses__swiper swiper">
+                    <div class="swiper-wrapper">
+                        <article class="course-item swiper-slide">
+                            <img src="assets/img/aaa.png" alt="Course 1" class="course-image" data-category="web"
+                                data-level="beginner">
+                            <h3>Web Development</h3>
+                            <p>Learn fundamentals of HTML, CSS, and JavaScript to build your first website.</p>
+                            <a href="#" class="button">Enroll Now</a>
+                        </article>
+
+                        <article class="course-item swiper-slide">
+                            <img src="assets/img/aaa.png" alt="Course 2" class="course-image" data-category="web"
+                                data-level="intermediate">
+                            <h3>React JS Essentials</h3>
+                            <p>Master components, props, and hooks while building modern web applications using React.</p>
+                            <a href="#" class="button">Enroll Now</a>
+                        </article>
+
+                        <article class="course-item swiper-slide">
+                            <img src="assets/img/aaa.png" alt="Course 3" class="course-image" data-category="backend"
+                                data-level="intermediate">
+                            <h3>Node.js & Express </h3>
+                            <p>Develop REST APIs, manage databases with MongoDB, connect your backend to frontend.</p>
+                            <a href="#" class="button">Enroll Now</a>
+                        </article>
+
+                        <article class="course-item swiper-slide">
+                            <img src="assets/img/aaa.png" alt="Course 4" class="course-image" data-category="web"
+                                data-level="advanced">
+                            <h3>Full-Stack Web Project</h3>
+                            <p>Combine frontend and backend skills to create a complete full-stack web application.</p>
+                            <a href="#" class="button">Enroll Now</a>
+                        </article>
+
+                        <article class="course-item swiper-slide">
+                            <img src="assets/img/aaa.png" alt="Course 5" class="course-image" data-category="web"
+                                data-level="advanced">
+                            <h3>Advanced JavaScript</h3>
+                            <p>Dive deep into ES6+, asynchronous programming, and advanced JavaScript concepts.</p>
+                            <a href="#" class="button">Enroll Now</a>
+                        </article>
+
+                        <article class="course-item swiper-slide">
+                            <img src="assets/img/aaa.png" alt="Course 6" class="course-image" data-category="design"
+                                data-level="beginner">
+                            <h3>UI/UX Design </h3>
+                            <p>Learn design principles, wireframing, and prototyping to create user-friendly interfaces.</p>
+                            <a href="#" class="button">Enroll Now</a>
+                        </article>
+
+                        <article class="course-item swiper-slide">
+                            <img src="assets/img/aaa.png" alt="Course 7" class="course-image" data-category="data"
+                                data-level="intermediate">
+                            <h3>Python for Data Science</h3>
+                            <p>Explore data analysis, visualization, and machine learning using Python libraries.</p>
+                            <a href="#" class="button">Enroll Now</a>
+                        </article>
+
+                        <article class="course-item swiper-slide">
+                            <img src="assets/img/aaa.png" alt="Course 8" class="course-image" data-category="marketing"
+                                data-level="beginner">
+                            <h3>Digital Marketing Basics</h3>
+                            <p>Understand SEO, social media marketing, and content strategies to grow online presence.</p>
+                            <a href="#" class="button">Enroll Now</a>
+                        </article>
+
+                        <article class="course-item swiper-slide">
+                            <img src="assets/img/aaa.png" alt="Course 9" class="course-image" data-category="management"
+                                data-level="intermediate">
+                            <h3>Project Management</h3>
+                            <p>Learn project planning, execution, and agile methodologies to lead successful projects.</p>
+                            <a href="#" class="button">Enroll Now</a>
+                        </article>
+
+                        <article class="course-item swiper-slide">
+                            <img src="assets/img/aaa.png" alt="Course 10" class="course-image" data-category="cybersecurity"
+                                data-level="advanced">
+                            <h3>Cybersecurity</h3>
+                            <p>Understand security principles, threat management, and best practices to protect digital assets.
+                            </p>
+                            <a href="#" class="button">Enroll Now</a>
+                        </article>
+                    </div>
                 </div>
-        
-                <div class="course-item">
-                    <img src="assets/img/aaa.png" alt="Course 2" class="course-image"/>
-                    <h3 class="course-title">Data Science Fundamentals</h3>
-                    <p class="course-description">Explore data analysis, visualization, and machine learning techniques.</p>
-                    <a href="#" class="button">Enroll Now</a>
+                <!-- Swiper Navigation -->
+                <div class="swiper-button-prev"></div>
+                <div class="swiper-button-next"></div>
+                <div class="swiper-pagination"></div>
+            </div>
+        </section>
+
+        <!----------------------------------Filter & Courses Section--------------------------->
+        <section class="courses-filter-section">
+            <div class="filter">
+                <h3 class="filter-title">Filter Courses</h3>
+                <div class="filter-controls">
+                    <select id="categoryFilter">
+                        <option value="all">All Categories</option>
+                        <option value="web">Web Development</option>
+                        <option value="design">Design</option>
+                        <option value="ai">Artificial Intelligence</option>
+                        <option value="cyber">CyberSecurity</option>
+                    </select>
+
+                    <select id="priceFilter">
+                        <option value="all">All Prices</option>
+                        <option value="free">Free</option>
+                        <option value="under50">$0 -> $50</option>
+                        <option value="under100">$50 -> $100</option>
+                        <option value="premium">$100+</option>
+                    </select>
+
+                    <select id="durationFilter">
+                        <option value="all">All Durations</option>
+                        <option value="short">0 -> 5 hours</option>
+                        <option value="medium">5 -> 15 hours</option>
+                        <option value="long">15+ hours</option>
+                    </select>
+
+                    <button id="applyFilter">Apply</button>
                 </div>
-        
-                <div class="course-item">
-                    <img src="assets/img/aaa.png" alt="Course 3" class="course-image"/>
-                    <h3 class="course-title">Graphic Design Mastery</h3>
-                    <p class="course-description">Develop creative skills in design, branding, and digital illustration.</p>
-                    <a href="#" class="button">Enroll Now</a>
-                </div>
-        
-                <div class="course-item">
-                    <img src="assets/img/aaa.png" alt="Course 4" class="course-image"/>
-                    <h3 class="course-title">Python Programming</h3>
-                    <p class="course-description">Start coding in Python and build your first projects step by step.</p>
-                    <a href="#" class="button">Enroll Now</a>
-                </div>
-        
-                <div class="course-item">
-                    <img src="assets/img/aaa.png" alt="Course 5" class="course-image"/>
-                    <h3 class="course-title">Machine Learning Basics</h3>
-                    <p class="course-description">Understand supervised and unsupervised learning algorithms.</p>
-                    <a href="#" class="button">Enroll Now</a>
-                </div>
-        
-                <div class="course-item">
-                    <img src="assets/img/aaa.png" alt="Course 6" class="course-image"/>
-                    <h3 class="course-title">UI/UX Design Principles</h3>
-                    <p class="course-description">Learn how to create beautiful and user-friendly interfaces.</p>
-                    <a href="#" class="button">Enroll Now</a>
+            </div>
+
+            <div class="courses-container-filter" id="coursesContainerFilter">
+                <div class="course-item-filter" data-category="web" data-price="free" data-duration="short">
+                    <img src="assets/img/aaa.png" alt="HTML & CSS" />
+                    <h3>HTML & CSS Fundamentals</h3>
+                    <p>Price: Free</p>
+                    <p>Duration: 2 weeks</p>
+                    <button>Visit Now</button>
                 </div>
 
-                <div class="course-item">
-                    <img src="assets/img/aaa.png" alt="Course 7" class="course-image"/>
-                    <h3 class="course-title">Digital Marketing Strategies</h3>
-                    <p class="course-description">Master SEO, social media marketing, and content creation techniques.</p>
-                    <a href="#" class="button">Enroll Now</a>
+                <div class="course-item-filter" data-category="web" data-price="paid" data-duration="medium">
+                    <img src="assets/img/aaa.png" alt="JavaScript Essentials" />
+                    <h3>JavaScript Essentials</h3>
+                    <p>Price: $29</p>
+                    <p>Duration: 4 weeks</p>
+                    <button>Visit Now</button>
                 </div>
 
-                <div class="course-item">
-                    <img src="assets/img/aaa.png" alt="Course 8" class="course-image"/>
-                    <h3 class="course-title">Cybersecurity Essentials</h3>
-                    <p class="course-description">Learn how to protect systems and data from cyber threats.</p>
-                    <a href="#" class="button">Enroll Now</a>
+                <div class="course-item-filter" data-category="web" data-price="paid" data-duration="long">
+                    <img src="assets/img/aaa.png" alt="React Development" />
+                    <h3>React for Beginners</h3>
+                    <p>Price: $49</p>
+                    <p>Duration: 6 weeks</p>
+                    <button>Visit Now</button>
                 </div>
 
-                <div class="course-item">
-                    <img src="assets/img/aaa.png" alt="Course 9" class="course-image"/>
-                    <h3 class="course-title">Project Management Basics</h3>
-                    <p class="course-description">Get introduced to project management methodologies and tools.</p>
-                    <a href="#" class="button">Enroll Now</a>
+                <div class="course-item-filter" data-category="web" data-price="paid" data-duration="medium">
+                    <img src="assets/img/aaa.png" alt="Node.js Backend" />
+                    <h3>Node.js & Express.js Fundamentals</h3>
+                    <p>Price: $39</p>
+                    <p>Duration: 5 weeks</p>
+                    <button>Visit Now</button>
                 </div>
 
-                <div class="course-item">
-                    <img src="assets/img/aaa.png" alt="Course 10" class="course-image"/>
-                    <h3 class="course-title">Cloud Computing Fundamentals</h3>
-                    <p class="course-description">Understand cloud services, architecture, and deployment models.</p>
-                    <a href="#" class="button">Enroll Now</a>
+                <div class="course-item-filter" data-category="web" data-price="free" data-duration="short">
+                    <img src="assets/img/aaa.png" alt="Bootstrap Design" />
+                    <h3>Responsive Design with Bootstrap</h3>
+                    <p>Price: Free</p>
+                    <p>Duration: 2 weeks</p>
+                    <button>Visit Now</button>
                 </div>
 
-                <div class="course-item">
-                    <img src="assets/img/aaa.png" alt="Course 11" class="course-image"/>
-                    <h3 class="course-title">Cloud Computing Fundamentals</h3>
-                    <p class="course-description">Understand cloud services, architecture, and deployment models.</p>
-                    <a href="#" class="button">Enroll Now</a>
+                <div class="course-item-filter" data-category="design" data-price="paid" data-duration="medium">
+                    <img src="assets/img/aaa.png" alt="UI/UX Design" />
+                    <h3>UI/UX Design Principles</h3>
+                    <p>Price: $35</p>
+                    <p>Duration: 4 weeks</p>
+                    <button>Visit Now</button>
                 </div>
 
-                <div class="course-item">
-                    <img src="assets/img/aaa.png" alt="Course 12" class="course-image"/>
-                    <h3 class="course-title">Mobile App Development</h3>
-                    <p class="course-description">Learn to create mobile applications for Android and iOS platforms.</p>
-                    <a href="#" class="button">Enroll Now</a>
+                <div class="course-item-filter" data-category="design" data-price="free" data-duration="short">
+                    <img src="assets/img/aaa.png" alt="Photoshop" />
+                    <h3>Photoshop for Beginners</h3>
+                    <p>Price: Free</p>
+                    <p>Duration: 2 weeks</p>
+                    <button>Visit Now</button>
+                </div>
+
+                <div class="course-item-filter" data-category="design" data-price="paid" data-duration="medium">
+                    <img src="assets/img/aaa.png" alt="Illustrator" />
+                    <h3>Logo Design with Illustrator</h3>
+                    <p>Price: $25</p>
+                    <p>Duration: 3 weeks</p>
+                    <button>Visit Now</button>
+                </div>
+
+                <div class="course-item-filter" data-category="design" data-price="paid" data-duration="long">
+                    <img src="assets/img/aaa.png" alt="Figma Design" />
+                    <h3>Prototyping in Figma</h3>
+                    <p>Price: $45</p>
+                    <p>Duration: 5 weeks</p>
+                    <button>Visit Now</button>
+                </div>
+
+                <div class="course-item-filter" data-category="design" data-price="paid" data-duration="long">
+                    <img src="assets/img/aaa.png" alt="Brand Design" />
+                    <h3>Creative Branding & Identity</h3>
+                    <p>Price: $59</p>
+                    <p>Duration: 6 weeks</p>
+                    <button>Visit Now</button>
+                </div>
+
+                <div class="course-item-filter" data-category="ai" data-price="free" data-duration="short">
+                    <img src="assets/img/aaa.png" alt="AI Introduction" />
+                    <h3>Introduction to Artificial Intelligence</h3>
+                    <p>Price: Free</p>
+                    <p>Duration: 2 weeks</p>
+                    <button>Visit Now</button>
+                </div>
+
+                <div class="course-item-filter" data-category="ai" data-price="paid" data-duration="medium">
+                    <img src="assets/img/aaa.png" alt="Machine Learning" />
+                    <h3>Machine Learning Basics</h3>
+                    <p>Price: $39</p>
+                    <p>Duration: 4 weeks</p>
+                    <button>Visit Now</button>
+                </div>
+
+                <div class="course-item-filter" data-category="ai" data-price="paid" data-duration="long">
+                    <img src="assets/img/aaa.png" alt="Deep Learning" />
+                    <h3>Deep Learning with Python</h3>
+                    <p>Price: $59</p>
+                    <p>Duration: 6 weeks</p>
+                    <button>Visit Now</button>
+                </div>
+
+                <div class="course-item-filter" data-category="ai" data-price="paid" data-duration="medium">
+                    <img src="assets/img/aaa.png" alt="Data Science" />
+                    <h3>Data Science for Beginners</h3>
+                    <p>Price: $45</p>
+                    <p>Duration: 5 weeks</p>
+                    <button>Visit Now</button>
+                </div>
+
+                <div class="course-item-filter" data-category="ai" data-price="free" data-duration="short">
+                    <img src="assets/img/aaa.png" alt="Chatbot Development" />
+                    <h3>Chatbot Development using AI</h3>
+                    <p>Price: Free</p>
+                    <p>Duration: 2 weeks</p>
+                    <button>Visit Now</button>
+                </div>
+
+                <div class="course-item-filter" data-category="cyber" data-price="paid" data-duration="medium">
+                    <img src="assets/img/aaa.png" alt="CyberSecurity" />
+                    <h3>Learn fundamentals of Cybersecurity</h3>
+                    <p>Price: $39</p>
+                    <p>Duration: 4 weeks</p>
+                    <button>Visit Now</button>
                 </div>
             </div>
         </section>
 
-    <!-- Instructors -->
-    <section class="instructors section" id="instructors">
-        <h2 class="section__title">Meet Our Instructors</h2>
-
-        <div class="instructors__container">
-            <div class="instructor-item">
-                <div class="instructor-image-wrapper">
-                    <img src="assets/img/aaa.png" alt="Instructor 1" class="instructor-image" />
-                </div>
-                <h3 class="instructor-name">Jane Doe</h3>
-                <p class="instructor-bio">
-                    Expert in Web Development with 10 years of experience.
-                </p>
-            </div>
-
-            <div class="instructor-item">
-                <div class="instructor-image-wrapper">
-                    <img src="assets/img/aaa.png" alt="Instructor 2" class="instructor-image" />
-                </div>
-                <h3 class="instructor-name">John Smith</h3>
-                <p class="instructor-bio">
-                    Data Scientist specializing in Machine Learning and AI.
-                </p>
-            </div>
-
-            <div class="instructor-item">
-                <div class="instructor-image-wrapper">
-                    <img src="assets/img/aaa.png" alt="Instructor 3" class="instructor-image" />
-                </div>
-                <h3 class="instructor-name">Emily Johnson</h3>
-                <p class="instructor-bio">
-                    Graphic Designer with a passion for creative design solutions.
-                </p>
-            </div>
-        </div>
-    </section>
+            <!-- Instructors -->
+                <section class="instructors section" id="instructors">
+                    <h2 class="section__title">Meet Our Instructors</h2>
+                
+                    <div class="instructors__container">
+                        <div class="instructor-item">
+                            <div class="instructor-image-wrapper">
+                                <img src="assets/img/aaa.png" alt="Instructor 1" class="instructor-image" />
+                            </div>
+                            <h3 class="instructor-name">Jane Doe</h3>
+                            <p class="instructor-bio">
+                                Expert in Web Development with 10 years of experience.
+                            </p>
+                        </div>
+                
+                        <div class="instructor-item">
+                            <div class="instructor-image-wrapper">
+                                <img src="assets/img/aaa.png" alt="Instructor 2" class="instructor-image" />
+                            </div>
+                            <h3 class="instructor-name">John Smith</h3>
+                            <p class="instructor-bio">
+                                Data Scientist specializing in Machine Learning and AI.
+                            </p>
+                        </div>
+                
+                        <div class="instructor-item">
+                            <div class="instructor-image-wrapper">
+                                <img src="assets/img/aaa.png" alt="Instructor 3" class="instructor-image" />
+                            </div>
+                            <h3 class="instructor-name">Emily Johnson</h3>
+                            <p class="instructor-bio">
+                                Graphic Designer with a passion for creative design solutions.
+                            </p>
+                        </div>
+                    </div>
+                </section>
 
     <!-- About Us -->
     <section class="about section" id="about">
@@ -322,6 +492,9 @@
     <!-- ========== Script ========== -->
     <script src="assets/js/login.js"></script>
     <script src="assets/js/theme.js"></script>
+    <script src="assets/js/swiper-bundle.min.js"></script>
+    <script src="assets/js/courses.js"></script>
+    <script src="assets/js/filter.js"></script>
 </body>
 
 </html>
