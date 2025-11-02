@@ -1,3 +1,69 @@
+/*
+    Todo:
+    1. Ensure Visits in CourseList --> ASK JANA
+    2. Ensure Visits are equal to 0 during creation --> ASK TONY 
+*/
+
+// Imports
+import { courseList } from "./Modules/courseSystem.js"
+import { ExploreSystem } from "./Modules/ExploreSystem.js";
+
+// References
+let courses = courseList;
+
+// Functions
+function createCourseItem({category, title, description}) {
+    // Create article
+    const article = document.createElement("article");
+    article.className = "course-item swiper-slide";
+
+    // IMG
+    const img = document.createElement("img");
+    img.src = "assets/img/aaa.png";
+    img.alt = "course image";
+    img.className = "course-image";
+    img.dataset.category = category;
+    img.dataset.level = "beginner";
+
+    // Title
+    const h3 = document.createElement("h3");
+    h3.textContent = title;
+
+    // Description
+    const p = document.createElement("p");
+    p.textContent = description;
+
+    // Button
+    const a = document.createElement("a");
+    a.href = "#";
+    a.className = "button";
+    a.textContent = "Enroll Now";
+
+    // Append children
+    article.appendChild(img);
+    article.appendChild(h3);
+    article.appendChild(p);
+    article.appendChild(a);
+
+    return article;
+}
+
+function renderCourses(courses){
+    for (const course of courses){
+    const courseInfo = {
+        category: course.category,
+        title: course.title,
+        description: course.description,
+    };
+
+    const articleElement = createCourseItem(courseInfo);
+
+    document.querySelector(".swiper-wrapper").appendChild(articleElement);
+}
+}
+
+renderCourses(ExploreSystem.getTrending(courses));
+
 // Initialize Swiper
 const coursesSwiper = new Swiper(".courses__swiper", {
     slidesPerView: 3,

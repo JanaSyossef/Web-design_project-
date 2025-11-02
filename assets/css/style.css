@@ -634,6 +634,7 @@ body {
 
 .course-item-filter {
     background: #ffffff;
+    max-width: 325px;
     border-radius: 1rem;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
     padding: 1.5rem;
