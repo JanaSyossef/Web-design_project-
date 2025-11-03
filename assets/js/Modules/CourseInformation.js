@@ -3,7 +3,7 @@ export const CourseInformation = {
   videosURL: "assets/video/dataStructure/mp4/",
   courseVideos: [ // key: courseid, value: array of videos URL --- But since no backend i will temporary set all courses to view same vids as an array
     ["Arrays.mp4", "Chapter 1: Arrays in Data Structure"],
-    ["BackTracking.mp4", "Chapter 2: Backtracking Algorithm"],
+    ["Backtracking.mp4", "Chapter 2: Backtracking Algorithm"],
     ["Heap.mp4", "Chapter 3: Heap Sort"],
     ["Pointers.mp4", "Chapter 4: Pointers"],
     ["Stack.mp4", "Chapter 5: What is a Stack?"]
