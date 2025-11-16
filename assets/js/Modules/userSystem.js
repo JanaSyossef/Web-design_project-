@@ -9,7 +9,10 @@ let users = loadFromStorage(STORAGE_KEY_USERS);
 if (!users || users.length === 0) {
   // Only add default user if storage is empty
   users = [
-    { id: 1, name: "Jana", email: "jana@test.com", password: "1234", role: "student" }
+    { id: 1, name: "Beshnack", email: "Beshbesh@test.com", password: "1234", role: "admin" },
+    { id: 2, name: "Mazen", email: "Mazenhany@test.com", password: "12345", role: "admin" },
+    { id: 3, name: "Jana", email: "jana@test.com", password: "1234", role: "student" },
+    { id: 4, name: "Jana", email: "jana@test.com", password: "1234", role: "student" }
   ];
   saveUsers(); // save immediately to storage
 }

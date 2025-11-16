@@ -7,15 +7,16 @@
  * @property {string} messageInput
  */
 
+
+//Example
 const data ={
-  nameInput: "Youssef",
-  emailInput: "yokeyoussef@gmail.com",
-  messageInput: "Hahaha jk lololol"
+  //nameInput: "Youssef",
+  //emailInput: "yokeyoussef@gmail.com",
+  //messageInput: "Hahaha jk lololol"
 };
 
 
 // Functions
-
 
 export const Feedback = {
 
@@ -25,15 +26,16 @@ export const Feedback = {
    * @returns {boolean}
    */
 
-  submitFeedback(event, data){
+  submitFeedback(event, data){    
 
     event.preventDefault();
+    console.log(JSON.stringify(data))
 
     try{
       fetch("/feedback", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
-        body: JSON.stringify(data),
+        bodyOfMessage: JSON.stringify(data),
       });
     }
     catch{
@@ -42,10 +44,5 @@ export const Feedback = {
     return true;
   }
 }
-
-
-// Testing
-
-document.querySelector(".footer-feedback").addEventListener("submit", (e) => submitFeedback(e, data));
 
 

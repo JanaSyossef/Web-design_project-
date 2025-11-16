@@ -3,13 +3,25 @@ import { deleteCourse } from "../../assets/js/Modules/courseSystem.js"
 import { courseList as Courses } from "../../assets/js/Modules/courseSystem.js"
 import { listUsers } from "../../assets/js/Modules/userSystem.js"
 import { CourseFeedback } from "../../assets/js/Modules/CourseFeedback.js"
+import { register } from "../../assets/js/Modules/userSystem.js"
+import { getCurrentUser } from "../../assets/js/Modules/userSystem.js"
+import { logout } from "../../assets/js/Modules/userSystem.js"
 
 
 console.log(CourseFeedback.addFeedback(1, "104", "haha", 2.1))
 
+if(getCurrentUser() != null){
+  if(getCurrentUser().role != `admin`){
+    window.location.href=`../errorpage.html`
+  }
+}else{
+  window.location.href=`../errorpage.html`
+}
+
+
 // Mock data and simple UI logic for the admin mockup
 const state = {
-  students: listUsers.length + 1,
+  students: 0,
   courses : Courses,
   instructors: [],
   users: listUsers(),
@@ -18,12 +30,23 @@ const state = {
   reviews: []
 }
 
-console.log(state.users)
+
+let admins = (state.users.filter((v) => v.role == `admin`))
+
+state.students = (state.users.length) - (admins.length)
+
 
 
 // DOM helpers
 const $ = selector => document.querySelector(selector)
 const $$ = selector => Array.from(document.querySelectorAll(selector))
+
+
+
+$(`.profile`).innerHTML = `${getCurrentUser().name}`
+
+
+
 
 function renderAdminPage(){
   $('#totalStudents').textContent = state.students
@@ -99,7 +122,7 @@ function renderAdminPage(){
   // render students in students tab
   const studentsBody = $('#studentsTable tbody')
   studentsBody.innerHTML = ''
-  state.users.forEach(user => {
+  state.users.filter((v) => v.role == `student`).forEach(user => {
     const tr = document.createElement('tr');
     tr.innerHTML = `
       <td>${user.id}</td>
@@ -231,7 +254,7 @@ function AddCourseModal() {
           <label for="courseInstructor">Instructor:</label>
           <select id="courseInstructor" required>
             <option value="">Select an instructor</option>
-            ${state.instructors.map(instructor => 
+            ${admins.map(instructor => 
               `<option value="${instructor.name}">${instructor.name}</option>`
             ).join('')}
           </select>
@@ -413,8 +436,17 @@ function addNewInstructor(name, email) {
     courses : [],
     earnings : 0,
   });
+
+  let instructorData = {
+    name: name,
+    email: email,
+    password: "1234",
+    role: "admin",
+  }
+
+  register(instructorData)
   // Re-render the UI if needed
-  renderAdminPage();
+  synchronization_render()
 }
 
 // Event listener for new instructor button
@@ -476,6 +508,25 @@ function AddInstructorModal() {
 }
 
 
+/* Settings Page */
+
+// Logout
+
+const logoutButton = document.getElementById('logout-button');
+
+logoutButton.addEventListener('click', () => {
+    logout();
+    alert(`Logout Successful.`);
+    window.location.href = `../login.html`
+});
+
+
+
+
+
+
+
+
 
 /* Synchronizations */
 
@@ -483,6 +534,7 @@ function synchronization_render(){
   syncAllInstructorCourses()
   CourseFeedback.syncWithCourseSystem()
   renderAdminPage()
+  admins = (state.users.filter((v) => v.role == `admin`))
 }
 
 

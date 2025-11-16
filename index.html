@@ -266,26 +266,28 @@
     
             <form class="login__form">
                 <div class="login__input-box">
-                    <input type="email" required>
+                    <input type="email" id="popupemail" required>
                     <label>Email</label>
                 </div>
     
                 <div class="login__input-box">
-                    <input type="password" required>
+                    <input type="password" id="popuppassword" required>
                     <label>Password</label>
                 </div>
     
-                <button type="submit" class="login__btn">Login</button>
+                <button type="submit" class="login__btn" id="login--button">Login</button>
+                <button type="reset" class="logout__btn" id="logout-button">Logout</button>
     
                 <p class="login__register">
-                    Don't have an account? <a href="#">Register</a>
+                    Don't have an account? <a href="register.html">Register</a>
                 </p>
             </form>
         </div>
     </div>
 
     <!-- ========== Script ========== -->
-    <script src="assets/js/login.js"></script>
+    <script src="assets/js/main.js" type="module"></script>
+    <script src="assets/js/indexlogin.js" type="module"></script>
     <script src="assets/js/theme.js"></script>
     <script src="assets/js/swiper-bundle.min.js"></script>
     <script src="assets/js/courses.js" type="module"></script>

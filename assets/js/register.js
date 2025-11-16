@@ -1,3 +1,8 @@
+
+import { register } from "./Modules/userSystem.js";
+
+
+
 document.addEventListener('DOMContentLoaded', () => {
   const registerClose = document.getElementById('register-close');
   const registerForm = document.querySelector('.register__form');
@@ -43,26 +48,17 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-      const users = JSON.parse(localStorage.getItem('users')) || [];
-
-      const existingUser = users.find(user => user.email === email);
-      if (existingUser) {
-        alert('Email is already registered!');
-        return;
-      }
-
       const newUser = {
         name,
         email,
-        password
+        password,
       };
 
-      users.push(newUser);
-      localStorage.setItem('users', JSON.stringify(users));
+      register(newUser)
 
       alert('Registration Successful! Welcome aboard.');
 
-      window.location.href = 'index.html';
+      window.location.href = 'login.html';
     });
   }
 });

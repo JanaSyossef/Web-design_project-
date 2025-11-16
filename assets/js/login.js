@@ -1,4 +1,13 @@
 
+import { login } from "./Modules/userSystem.js"
+import { getCurrentUser } from "./Modules/userSystem.js"
+
+
+if(getCurrentUser() != null){
+  window.location.href = `index.html`;
+}
+
+
 const togglePasswordIcons = document.querySelectorAll('.toggle-password');
 
 togglePasswordIcons.forEach(icon => {
@@ -25,19 +34,19 @@ document.getElementById('loginForm').addEventListener('submit', function(e) {
     return;
   }
 
-  const users = JSON.parse(localStorage.getItem('users')) || [];
-
-  const user = users.find(user => user.email === email && user.password === password);
-
-  if (!user) {
-    alert('Incorrect email or password!');
+  if(!login(email, password)){
+    alert(`Invalid Data! Please enter the correct email or password.`)
     return;
   }
 
-  localStorage.setItem('currentUser', JSON.stringify(user));
-
-  alert(`Welcome back, ${user.name}!`);
+  if(getCurrentUser().role === `admin`){
+    alert(`Welcome back, Master.`)
+    window.location.href = "admin/index.html"
+    return
+  }
+  alert(`Welcome back, ${getCurrentUser().name}!`);
   window.location.href = "index.html";
+  return
 });
 
 document.getElementById('login-close').addEventListener('click', () => {

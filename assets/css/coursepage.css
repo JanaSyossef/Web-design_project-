@@ -46,6 +46,11 @@ body {
     margin-top: 1rem;
 }
 
+h4.course-title{
+    font-size: 1rem;
+    border: 0;
+}
+
 .video-container {
     width: 100%;
     background: #000;

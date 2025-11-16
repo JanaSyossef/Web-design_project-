@@ -43,6 +43,7 @@ body {
   color: #4b5563;
   cursor: pointer;
   transition: color 0.3s ease;
+  text-decoration: none;
 }
 
 .login__close:hover { color: #1e1b4b; }

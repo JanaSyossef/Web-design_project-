@@ -1127,6 +1127,7 @@ body {
     transition: color 0.3s ease;
 }
 
+
 .login__close:hover {
     color: #1e1b4b;
 }
@@ -1194,8 +1195,27 @@ body {
     margin-top: 0.5rem;
 }
 
+.logout__btn{
+    width: 100%;
+    padding: 0.9rem;
+    border: none;
+    border-radius: 10px;
+    background: #dc2626;
+    color: #fff;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-top: 0.5rem;
+}
+
 .login__btn:hover {
     background: linear-gradient(135deg, #4338ca, #4f46e5);
+    transform: translateY(-2px);
+    box-shadow: 0 3px 8px rgba(108, 99, 255, 0.4);
+}
+
+.logout__btn:hover {
+    background: #b91c1c;
     transform: translateY(-2px);
     box-shadow: 0 3px 8px rgba(108, 99, 255, 0.4);
 }
