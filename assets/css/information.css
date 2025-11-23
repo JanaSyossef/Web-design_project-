@@ -12,6 +12,10 @@ body {
     align-items: center;
     justify-content: center;
     text-align: center;
+    margin-bottom: 40px; 
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    margin-top: 35px
 }
 .hero-img {
     position: absolute;
@@ -20,6 +24,7 @@ body {
     object-fit: cover;
     filter: brightness(50%);
     z-index: 1;
+    border-radius: 10px;
 }
 .hero-text {
     position: relative;
@@ -39,11 +44,17 @@ body {
     font-size: 16px;
     transition: 0.3s;
     margin-top: 10px;
+    text-decoration: none;
 }
 .btn-enroll:hover { background: #4338ca; }
 
 section{
-  margin: 0px 2rem;
+    margin: 0px 2rem;
+    padding: 0px 2rem;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    background: #fff;
+    padding-bottom: 30px;
 }
 
 
@@ -86,6 +97,7 @@ section{
     background: #fff;
     padding: 20px;
     border-radius: 12px;
+    margin-bottom: 40px;
 }
 .comment {
     background: #f9f9f9;
@@ -133,3 +145,148 @@ section{
     .hero-text h1 { font-size: 28px; }
     .hero-text p { font-size: 16px; }
 }
+
+/* ============ Dark theme ==============================*/
+body.dark-theme {
+    background: linear-gradient(135deg, #0f172a, #1e293b);
+    color: #cbd5e1;
+}
+
+body.dark-theme .hero-text h1,
+body.dark-theme .hero-text p {
+    color: #f1f5f9;
+}
+
+body.dark-theme .details {
+    background: #1e293b;
+    color: #cbd5e1;
+    border: 1px solid #475569;
+}
+
+body.dark-theme .detail-box h3 {
+    color: #6366f1; 
+}
+
+body.dark-theme .detail-box p {
+    color: #94a3b8;
+}
+
+body.dark-theme .learn {
+    background: #1e293b;
+    color: #cbd5e1;
+    border: 1px solid #475569;
+}
+
+body.dark-theme .rating-section {
+    background: #1e293b;
+    color: #f1f5f9;
+    border: 1px solid #475569;
+}
+
+body.dark-theme .stars i {
+    color: #6366f1;
+}
+
+body.dark-theme .comments {
+    background: #1e293b;
+    color: #cbd5e1;
+    border: 1px solid #475569;
+}
+
+body.dark-theme .comment {
+    background: #334155;
+    color: #f1f5f9;
+    border: 1px solid #475569;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+}
+
+body.dark-theme .add-comment input {
+    background: #0f172a;
+    color: #cbd5e1;
+    border: 1px solid #475569;
+}
+
+/*================ Responsive Design =====================*/
+@media (max-width: 768px) {
+    .details {
+        grid-template-columns: 1fr;
+    }
+    .hero {
+        height: 300px;
+        margin-top: 150px;
+    }
+    .hero-text h1 {
+        font-size: 28px;
+    }
+    .hero-text p {
+        font-size: 16px;
+    }
+    .learn ul {
+        columns: 1;
+    }
+    .learn h2 {
+        font-size: 24px;
+    }
+    .learn p {
+        font-size: 16px;
+    }
+    .rating-section {
+        padding: 10px;
+    }
+    .comments {
+        padding: 10px;
+    }
+    .comment {
+        padding: 10px;
+    }
+    .add-comment input {
+        padding: 5px;
+    }
+    .add-comment button {
+        padding: 5px 10px;
+    }
+    .btn-reset {
+        padding: 5px 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero {
+        height: 250px;
+        margin-top: 100px;
+    }
+    .hero-text h1 {
+        font-size: 24px;
+    }
+    .hero-text p {
+        font-size: 14px;
+    }
+    .details {
+        gap: 10px;
+    }
+    .learn h2 {
+        font-size: 20px;
+    }
+    .learn p {
+        font-size: 14px;
+    }
+    .rating-section {
+        padding: 5px;
+    }
+    .comments {
+        padding: 5px;
+    }
+    .comment {
+        padding: 5px;
+    }
+    .add-comment input {
+        padding: 3px;
+    }
+    .add-comment button {
+        padding: 3px 5px;
+    }
+    .btn-reset {
+        padding: 3px 5px;
+    }
+}
+
