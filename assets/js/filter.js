@@ -194,6 +194,7 @@ function displayCourses(query){
     const category = document.getElementById('categoryFilter').value;
     const price = document.getElementById('priceFilter').value;
     const duration = document.getElementById('durationFilter').value;
+    const enrollment = document.getElementById('enrollFilter').value;
 
     // Filteration
     const criteria = {};
@@ -216,6 +217,8 @@ function displayCourses(query){
         }
     }
 
+    if (enrollment !== "all") criteria.enrolled = enrollment;
+    
     const filteredCourses = ExploreSystem.filterCourses(coursesList, criteria);
 
     currentPage = 1;
