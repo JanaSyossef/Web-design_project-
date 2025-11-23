@@ -34,7 +34,7 @@ mainPopup.innerHTML=`
                 <button type="submit" class="login__btn" id="login--button">Login</button>
     
                 <p class="login__register">
-                    Don't have an account? <a href="/docs/pages/register.html">Register</a>
+                    Don't have an account? <a href="/src/pages/register.html">Register</a>
                 </p>
             </form>
         </div>
@@ -100,7 +100,7 @@ const adminButton = document.querySelector(`.admin__btn`)
 
 logoutButton.addEventListener('click', () => {
     logout();
-    window.location.href="/docs/pages/login.html"
+    window.location.href="/src/pages/login.html"
 });
 
 if (getCurrentUser().role === `admin`){
@@ -112,7 +112,7 @@ if (getCurrentUser().role === `admin`){
 
 
 adminButton.addEventListener(`click`, () =>{
-    window.location.href=`/docs/pages/admin.html`
+    window.location.href=`/src/pages/admin.html`
 })
 
 /* Profile close*/

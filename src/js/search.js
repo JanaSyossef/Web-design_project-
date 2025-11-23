@@ -43,7 +43,7 @@ searchInput.addEventListener("input", () => {
     if (matched.length) {
         matched.forEach(course => {
             const title = course.title;
-            const imgSrc = "/docs/assets/images/aaa.png";
+            const imgSrc = "/src/assets/images/aaa.png";
 
             const item = document.createElement("div");
             item.style.display = "flex";
@@ -66,7 +66,7 @@ searchInput.addEventListener("input", () => {
             }
 
             item.addEventListener("click", () => {
-                window.location.href = `/docs/pages/coursepage.html?id=${course.id}`;
+                window.location.href = `/src/pages/coursepage.html?id=${course.id}`;
             });
 
             suggestionBox.appendChild(item);
@@ -85,7 +85,7 @@ searchInput.addEventListener("blur", () => {
 searchInput.addEventListener("keydown", e => {
     if(e.key === "Enter"){
         const query = searchInput.value.trim();
-        if (window.location.pathname === "/docs/index.html" || window.location.pathname === "/") {
+        if (window.location.pathname === "/src/index.html" || window.location.pathname === "/") {
             const section = document.querySelector("#filter");
             if (section) {
                 section.scrollIntoView({ behavior: "smooth" });
@@ -103,7 +103,7 @@ searchInput.addEventListener("keydown", e => {
 searchInput.addEventListener("keydown", e => {
     if(e.key === "Enter"){
         const query = searchInput.value.trim();
-        if (window.location.pathname === "/docs/index.html" || window.location.pathname === "/") {
+        if (window.location.pathname === "/src/index.html" || window.location.pathname === "/") {
             const section = document.querySelector("#filter");
             if (section) {
                 section.scrollIntoView({ behavior: "smooth" });
@@ -120,7 +120,7 @@ searchInput.addEventListener("keydown", e => {
 
 document.getElementById("searchIcon").addEventListener("click", e => {
     const query = searchInput.value.trim();
-    if (window.location.pathname === "/docs/index.html" || window.location.pathname === "/") {
+    if (window.location.pathname === "/src/index.html" || window.location.pathname === "/") {
         const section = document.querySelector("#filter");
         if (section) {
             section.scrollIntoView({ behavior: "smooth" });
