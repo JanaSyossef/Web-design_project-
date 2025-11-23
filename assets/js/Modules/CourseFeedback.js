@@ -1,4 +1,5 @@
 import { getCourse, courseList } from "./courseSystem.js";
+import { updateXP } from "./progressSystem.js";
 
 // Variables
 

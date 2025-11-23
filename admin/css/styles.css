@@ -246,6 +246,7 @@ button {
   list-style: none;
   padding: 0;
   margin: 0;
+  overflow: hidden;
 }
 
 .activity-list li {
@@ -253,6 +254,10 @@ button {
   border-bottom: 1px solid rgba(255, 255, 255, 0.02);
   color: var(--muted);
   font-size: 14px;
+}
+
+.activityDate{
+  color: gold;
 }
 
 .reviews-list {

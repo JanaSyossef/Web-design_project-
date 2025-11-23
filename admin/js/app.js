@@ -28,6 +28,20 @@ document.addEventListener("keydown",(e) =>{
     }
 });
 
+// Debouncer
+
+function debounce(fn, delay) {
+  let timer;
+  return function (...args) {
+    console.log("Debounce triggered, resetting timer");
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      fn.apply(this, args);
+    }, delay);
+  };
+}
+const debouncedRender = debounce(synchronization_render, 1500);
+debouncedRender();
 
 
 
@@ -48,6 +62,42 @@ const CommissionStorage = {
     localStorage.setItem(this.key, amount.toString());
   },
 };
+
+const RecentActivities = {
+  key: "recentActivities",
+  maxSize: 5,
+
+  load() {
+    const data = localStorage.getItem(this.key);
+    return data ? JSON.parse(data) : [];
+  },
+
+  save(stack) {
+    localStorage.setItem(this.key, JSON.stringify(stack));
+  },
+
+  push(activity) {
+    if (!activity) return;
+
+    const stack = this.load();
+
+    stack.unshift({
+      activity,
+      timestamp: new Date().toISOString(),
+    });
+
+    if (stack.length > this.maxSize) {
+      stack.pop();
+    }
+
+    this.save(stack);
+  },
+
+  clear() {
+    localStorage.removeItem(this.key);
+  },
+};
+
 
 
 // Mock data and simple UI logic for the admin mockup
@@ -83,11 +133,13 @@ let searchBar = $('#globalSearch');
 synchronization_render()
 
 function renderAdminPage(){
+
+  state.activities = RecentActivities.load()
+
   let query = searchBar.value;
   $('#totalStudents').textContent = state.students;
   $('#totalCourses').textContent = state.courses.length;
   $('#totalInstructors').textContent = state.instructors.length;
-  $('#revenue').textContent = (state.courses.reduce((s,c)=> s + (c.enrolled*9.99),0)).toFixed(2) + ` ` +'LE';
 
   // render recent courses
   const tbody = $('#coursesTable tbody');
@@ -100,7 +152,7 @@ function renderAdminPage(){
       <td>${c.instructor}</td>
       <td class="status status-${c.status.toLowerCase()}">${c.status}</td>
       <td>
-        ${c.status !== 'Published' ? `<button class="approve-btn btn" data-id="${c.id}">Approve</button>` : ''}
+        ${c.status !== 'Approved' ? `<button class="approve-btn btn" data-id="${c.id}">Approve</button>` : ''}
         <button class="view-btn btn" data-id="${c.id}">View</button>
       </td>
     `
@@ -119,7 +171,7 @@ function renderAdminPage(){
       <td>${c.category}</td>
       <td>${c.price}$</td>
       <td>${c.students.length}</td>
-      <td>${CourseFeedback.getAverageRating(c.id)}</td>
+      <td class="ri-star-fill" style="color:gold"> ${CourseFeedback.getAverageRating(c.id)}</td>
       <td class="status status-${c.status.toLowerCase()}">${c.status}</td>
       <td><button class="remove-course-btn btn danger" data-id="${c.id}">Remove</button></td>
     `
@@ -131,7 +183,11 @@ function renderAdminPage(){
   const comm = CommissionStorage.load();
   instructorsbody.innerHTML = ''
   let instructors = ExploreSystem.searchInstructor(state.instructors, query);
+
+  let total = 0;
   instructors.forEach(instructor => {
+    let totalWithoutCommission = getInstructorEarnings(instructor.id,comm)/(1-comm/100);
+    total += totalWithoutCommission;
     const tr = document.createElement('tr');
     tr.innerHTML = `
       <td>
@@ -157,16 +213,25 @@ function renderAdminPage(){
     `;
     instructorsbody.appendChild(tr);
   })
+  const rev = $(`#revenue`);
+  rev.textContent=`${total.toFixed(2)*(comm/100)} $`
 
   // render students in students tab
   const studentsBody = $('#studentsTable tbody')
   studentsBody.innerHTML = '';
   let students = ExploreSystem.searchStudents(state.users, query);
   students.filter((v) => v.role == `student`).forEach(user => {
-
+    
     const coursesListt = user.enrolledCourses
-      .map(id => `${id} -> ${getCourse(id).title}`)
+      .map(id => {
+        try{
+          `${id} -> ${getCourse(id).title}`
+        }catch(e){
+          
+        }
+      })
       .join('<br>');
+      
       
     const tr = document.createElement('tr');
     tr.innerHTML = `
@@ -189,7 +254,16 @@ function renderAdminPage(){
         tr.innerHTML=`
         <td>${user.id}</td>
         <td>${user.name}</td>
-        <td>${getCourse(index).price} $</td>
+        <td>${
+          (function(){
+            try{
+              price = getCourse(index).price 
+            }catch(e){
+              console.warn("Too bad broo..")
+            }
+          })()
+        }
+        </td>
         <td>Done</td> 
         <td>${makeDateLookGood(getCourse(index).students.filter((d) => d[0] === user.id)[0][1])}</td>
         `
@@ -228,25 +302,16 @@ function renderAdminPage(){
     }
   });
 
-  // Settings
-  const commission = $(`#commission`);
-  const btn = $(`#saveSettings`);
-
-  commission.setAttribute("value", CommissionStorage.load())
-
-  btn.addEventListener("click", () => {
-    CommissionStorage.save(Number(commission.value))
-  });
-  
-}
-
-
-
 
   // activity
   const act = $('#activityList')
   act.innerHTML = ''
-  state.activities.forEach(a=>{const li = document.createElement('li'); li.textContent=a; act.appendChild(li)})
+  state.activities.forEach(a=>{
+    const li = document.createElement('li');
+    li.innerHTML=`${a.activity} at <p class="activityDate">${makeDateLookGood(a.timestamp)}</p>`;
+    act.appendChild(li)
+  });
+}
 
 
   searchBar.addEventListener('input', function() {
@@ -314,7 +379,7 @@ function addNewCourse(title, instructorName, category,price, duration, descripti
 
   updateInstructorCourses(instructorName, newId, title);
 
-  synchronization_render()
+  debouncedRender()
 }
 
 // Event listener for new course button
@@ -407,6 +472,7 @@ function AddCourseModal() {
     
     if (title && instructor && category && price && duration && description) {
       addNewCourse(title, instructor, category, price,duration, description);
+      RecentActivities.push(`New Course Added. (${title})`)
       document.body.removeChild(modal);
     }
   });
@@ -420,7 +486,6 @@ function AddCourseModal() {
 
 }
 
-
 // Remove Function (Courses)
 function removeSpecificCourse(courseId) {
   
@@ -428,15 +493,14 @@ function removeSpecificCourse(courseId) {
    
     deleteCourse(courseId);
     
-    synchronization_render()
+    debouncedRender()
   }
 }
 
 document.addEventListener('click', (e) => {
   if (e.target.classList.contains('remove-course-btn')) {
-    
     const courseId = parseInt(e.target.getAttribute('data-id'));
-    
+    RecentActivities.push(`Course Removed. (${getCourse(courseId).title})`)
     removeSpecificCourse(courseId);
   }
 });
@@ -447,7 +511,7 @@ function removeSpecificReview(courseId, userID) {
    
     CourseFeedback.deleteFeedback(courseId, userID)
     
-    synchronization_render()
+    debouncedRender()
   }
 }
 
@@ -545,10 +609,12 @@ document.addEventListener('click', (e) => {
     const courseId = parseInt(e.target.getAttribute('data-id'));
     const course = state.courses.find(c => c.id === courseId);
     
-    if (course) {
+    if (course && course.status != "Approved") {
+      e.target.setAttribute(`disabled`, ``);
       course.status = "Approved";
       editCourse(courseId, course)
-      synchronization_render()
+      RecentActivities.push(`Course Approved. (${course.title})`)
+      debouncedRender()
     }
   }
 });
@@ -559,7 +625,7 @@ document.addEventListener("click", (e) =>{
     const course = courseList.find((course) => courseId === course.id);
     if (course) {
       window.location.href=`/Web-design_project-/information.html?id=${courseId}`
-      synchronization_render()
+      debouncedRender()
     }
   }
 });
@@ -595,7 +661,7 @@ function addNewInstructor(name, email) {
 
   register(instructorData)
   // Re-render the UI if needed
-  synchronization_render()
+  debouncedRender()
 }
 
 // Event listener for new instructor button
@@ -643,7 +709,8 @@ function AddInstructorModal() {
     
     if (name && email) {
       addNewInstructor(name, email);
-      synchronization_render()
+      RecentActivities.push(`Instructor added. (${name})`)
+      debouncedRender()
       document.body.removeChild(modal);
     }
   });
@@ -667,6 +734,18 @@ logoutButton.addEventListener('click', () => {
     window.location.href = `../login.html`
 });
 
+/* Settings */
+
+const commission = $(`#commission`);
+const btn = $(`#saveSettings`);
+
+commission.setAttribute("value", CommissionStorage.load())
+
+btn.addEventListener("click", () => {
+  RecentActivities.push(`Updated commission: ${commission.value}`)
+  CommissionStorage.save(Number(commission.value))
+  debouncedRender()
+});
 
 
 
