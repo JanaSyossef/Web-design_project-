@@ -15,8 +15,8 @@ spinnerStyle.textContent = `
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(255,255,255,0.6); /* طبقة شفافة */
-  backdrop-filter: blur(30px); /* ضباب خفيف يخفي التغييرات */
+  background: rgba(255,255,255,0.6); 
+  backdrop-filter: blur(30px); 
   display: none;
   align-items: center;
   justify-content: center;
@@ -119,10 +119,7 @@ document.getElementById("language-button").addEventListener("click", async () =>
     const elapsed = Date.now() - startTime;
     lastTranslationDuration = elapsed;
   } else {
-    await Promise.all([
-      translatePage('en'),
-      new Promise(resolve => setTimeout(resolve, lastTranslationDuration))
-    ]);
+    location.reload();
   }
 
   spinner.style.opacity = "0";
