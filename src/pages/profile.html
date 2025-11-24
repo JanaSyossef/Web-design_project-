@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Profile Page</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.5.0/remixicon.css">
+<link rel="stylesheet" href="assets/css/profile.css">
+</head>
+<body>
+
+<div class="burger" onclick="toggleSidebar()"><i class="ri-menu-line"></i></div>
+
+<div class="sidebar" id="sidebar">
+  <h3>Menu</h3>
+  <a onclick="showProfile()">Profile</a>
+  <a onclick="showChangePassword()">Change Password</a>
+  <a onclick="showMyCourses()">My Courses</a>
+  <button class="notification-btn">Notifications</button>
+</div>
+
+<div class="main-content" id="mainContent">
+  <div class="profile-container" id="profileSection">
+    <div class="profile-header">
+      <div class="profile-photo">
+        <img id="profileImg" src="https://via.placeholder.com/140" alt="Default Profile">
+        <div class="photo-upload" onclick="document.getElementById('uploadInput').click();">Upload Photo</div>
+        <input type="file" id="uploadInput" style="display:none" accept="image/*" onchange="previewPhoto(event)">
+      </div>
+      <div class="info-box">
+        <h3>Profile Info</h3>
+        <p>Name: <span contenteditable="true">Student Name</span></p>
+        <p>Email: <span contenteditable="true">student@email.com</span></p>
+        <p>Password: <span contenteditable="true">********</span></p>
+        <p>Status: <span>Student</span></p>
+      </div>
+    </div>
+    <div class="bio-box">
+      <textarea placeholder="Write your bio here..."></textarea>
+    </div>
+
+    <div class="stats-box">
+      <div class="stat-card">
+        <h3>10</h3>
+        <p>Total Courses</p>
+      </div>
+      <div class="stat-card">
+        <h3>4</h3>
+        <p>Completed Courses</p>
+      </div>
+      <div class="stat-card">
+        <h3>25</h3>
+        <p>Hours Learned</p>
+      </div>
+    </div>
+
+    <div class="exp-streak-box">
+      <div class="exp-card">
+        <h3 id="expPoints">0</h3>
+        <p>EXP Points</p>
+      </div>
+      <div class="streak-card">
+        <h3 id="streakCount">0</h3>
+        <p>Streak Days</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="change-password-container" id="changePasswordSection">
+    <div class="change-password-form">
+      <h3>Change Password</h3>
+      <input type="email" placeholder="Enter your email">
+      <input type="password" placeholder="New Password">
+      <input type="password" placeholder="Confirm Password">
+      <button>Save Password</button>
+    </div>
+  </div>
+
+  <div class="courses-container" id="coursesSection">
+    <div class="course-card">
+      <img src="assets/img/aaa.png" alt="Course Image">
+      <div class="course-details">
+        <h4>Course 1</h4>
+        <p>Learn basics of programming.</p>
+        <div class="progress-bar"><div class="progress-fill" style="width:50%"></div></div>
+        <p>Videos: 5/10 | Hours: 2/5</p>
+      </div>
+    </div>
+    <div class="course-card">
+      <img src="assets/img/aaa.png" alt="Course Image">
+      <div class="course-details">
+        <h4>Course 2</h4>
+        <p>Advanced JavaScript techniques.</p>
+        <div class="progress-bar"><div class="progress-fill" style="width:40%"></div></div>
+        <p>Videos: 8/20 | Hours: 4/10</p>
+      </div>
+    </div>
+    <div class="course-card">
+      <img src="assets/img/aaa.png" alt="Course Image">
+      <div class="course-details">
+        <h4>Course 3</h4>
+        <p>Web Development Full Stack.</p>
+        <div class="progress-bar"><div class="progress-fill" style="width:20%"></div></div>
+        <p>Videos: 2/10 | Hours: 1/5</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="assets/js/profile.js"></script>
+</body>
+</html>
