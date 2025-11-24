@@ -210,8 +210,8 @@ function renderAdminPage(){
       </td>
       <td>${getInstructorEarnings(instructor.id, comm)} $</td>
       <td>
-        <button class="btn view-instructor" data-id="${instructor.id}">View</button>
-        <button class="btn contact-instructor" data-email="${instructor.email}">Contact</button>
+        <!-- <button class="btn view-instructor" data-id="${instructor.id}">View</button> -->
+        <a class="btn contact-instructor" data-email="${instructor.email}" href="mailto:${instructor.email}" style=text-decoration:none>Contact</a>
       </td>
     `;
     instructorsbody.appendChild(tr);

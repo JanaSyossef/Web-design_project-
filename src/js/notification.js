@@ -56,7 +56,7 @@ style.textContent = `
     margin: 0;
 }
 .notification-popup li {
-    padding: 10px 40px 10px 20px; /* خلي مساحة كافية للنقطة */
+    padding: 10px 40px 10px 20px;
     border-bottom: 1px solid #eee;
     position: relative;
     cursor: pointer;
@@ -73,11 +73,11 @@ style.textContent = `
     background: #6366f1;
     border-radius: 50%;
     position: absolute;
-    right: 10px; /* تبقى جنب النص بدون ما تلصق الكلام */
+    right: 10px;
     top: 50%;
     transform: translateY(-50%);
 }
-.show-first-btn {
+.show-all-btn {
     display: block;
     text-align: center;
     padding: 10px;
@@ -86,10 +86,10 @@ style.textContent = `
     text-decoration: none;
     font-weight: bold;
     cursor: pointer;
-    border-radius: 0 0 8px 8px; /* طرف البوب اب */
-    margin: 0; /* بدون مسافة تحت */
+    border-radius: 0 0 8px 8px;
+    margin: 0;
 }
-.show-first-btn:hover { background: #4f46e5; }
+.show-all-btn:hover { background: #4f46e5; }
 
 /* Responsive */
 @media (max-width: 400px) {
@@ -101,6 +101,12 @@ style.textContent = `
         font-size: 18px;
         padding: 8px;
     }
+}
+
+
+body.dark-theme .notification-popup{
+    background-color:rgb(15, 23, 42);
+    color:#f8fafc;
 }
 `;
 document.head.appendChild(style);
@@ -123,11 +129,7 @@ popup.className = 'notification-popup';
 const ul = document.createElement('ul');
 
 const messages = [
-    { text: "New comment on your post. Lorem ipsum dolor sit amet.", unread: true },
-    { text: "Your subscription is expiring soon.", unread: true },
-    { text: "New like on your photo!", unread: true },
-    { text: "You have a new friend request.", unread: true },
-    { text: "Update available. Please update to the latest version.", unread: true }
+    { text: "No Notification System yet tho :P", unread: true },
 ];
 
 messages.slice(0,5).forEach((msg, i) => {
@@ -144,11 +146,11 @@ messages.slice(0,5).forEach((msg, i) => {
 popup.appendChild(ul);
 
 
-const showFirstBtn = document.createElement('a');
-showFirstBtn.className = 'show-first-btn';
-showFirstBtn.textContent = 'Show First Notification';
-showFirstBtn.href = '#'; 
-popup.appendChild(showFirstBtn);
+const showAllBtn = document.createElement('a');
+showAllBtn.className = 'show-all-btn';
+showAllBtn.textContent = 'Show all Notifications';
+showAllBtn.href = '#'; 
+popup.appendChild(showAllBtn);
 
 wrapper.appendChild(popup);
 
@@ -175,5 +177,5 @@ ul.addEventListener('click', e => {
         if(dot) dot.remove();
         updateCount();
     }
-    li.classList.toggle('expanded');
+    //li.classList.toggle('expanded');
 });

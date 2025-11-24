@@ -46,7 +46,7 @@ mainPopup.innerHTML=`
             <i class="ri-close-line profile__close" id="profile-close"></i>
             <h2 class="profile__title">Welcome Back</h2>
             <p class="profile__subtitle">Continue your learning journey</p>
-
+            <button class="profile__btn" id="profile--button">My Profile</button>
             <button class="admin__btn" id="admin--button">Admin Dashboard</button>
             <button class="logout__btn" id="logout-button">Logout</button>
         </div>
@@ -97,16 +97,17 @@ const logoutButton = document.getElementById('logout-button');
 const profileClose = document.getElementById('profile-close');
 const profileTitle = document.querySelector(`.profile__title`);
 const adminButton = document.querySelector(`.admin__btn`)
+const profileButton = document.querySelector(`.profile__btn`)
 
 logoutButton.addEventListener('click', () => {
     logout();
     window.location.href="/pages/login.html"
 });
 
+profileTitle.innerHTML = `<h2 class="profile__title">Welcome back, ${getCurrentUser().name}</h2>`
 if (getCurrentUser().role === `admin`){
-    profileTitle.innerHTML = `<h2 class="profile__title">Welcome back, ${getCurrentUser().name}</h2>`
-}else{
-    profileTitle.innerHTML = `<h2 class="profile__title">Welcome back, ${getCurrentUser().name}</h2>`
+    profileButton.style.display=`none`
+}else if(getCurrentUser().role === `student`){
     adminButton.style.display = `none`
 }
 
@@ -115,10 +116,21 @@ adminButton.addEventListener(`click`, () =>{
     window.location.href=`/pages/admin.html`
 })
 
+
+profileButton.addEventListener(`click`, () =>{
+    window.location.href=`/pages/profile.html`
+})
+
+
+
+
+
 /* Profile close*/
 profileClose.addEventListener('click', () => {
     profileContainer.classList.remove('active');
 });
+
+// to click anywhere to close
 
 window.addEventListener('click', (e) => {
     if (e.target === profileContainer) {

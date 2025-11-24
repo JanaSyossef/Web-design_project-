@@ -5,18 +5,27 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Profile Page</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.5.0/remixicon.css">
-<link rel="stylesheet" href="assets/css/profile.css">
+<link rel="icon" href="assets/icons/favicon.ico" type="image/x-icon">
+<link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="96x96" href="assets/icons/favicon-96x96.png">
+<link rel="manifest" href="assets/icons/site.webmanifest">
+<link rel="stylesheet" href="../css/profile.css">
 </head>
 <body>
 
-<div class="burger" onclick="toggleSidebar()"><i class="ri-menu-line"></i></div>
+<div class="burger"><i class="ri-menu-line"></i></div>
 
 <div class="sidebar" id="sidebar">
   <h3>Menu</h3>
-  <a onclick="showProfile()">Profile</a>
-  <a onclick="showChangePassword()">Change Password</a>
-  <a onclick="showMyCourses()">My Courses</a>
+  <a id="sidebar-profile">Profile</a>
+  <a id="sidebar-changePassword">Change Password</a>
+  <a id="sidebar-myCourses">My Courses</a>
   <button class="notification-btn">Notifications</button>
+  <div class="sidebar-footer">
+    <a href="../index.html#home">
+      <i class="ri-home-2-line home-button" id="home-button"></i>
+    </a>
+  </div>
 </div>
 
 <div class="main-content" id="mainContent">
@@ -29,27 +38,27 @@
       </div>
       <div class="info-box">
         <h3>Profile Info</h3>
-        <p>Name: <span contenteditable="true">Student Name</span></p>
-        <p>Email: <span contenteditable="true">student@email.com</span></p>
-        <p>Password: <span contenteditable="true">********</span></p>
-        <p>Status: <span>Student</span></p>
+        <p>Name: <span id="info-box-name">Student Name</span></p>
+        <p>Email: <span id="info-box-email">student@email.com</span></p>
+        <p>Password: <span id="info-box-password">********</span></p>
       </div>
     </div>
+    <!-- 
     <div class="bio-box">
       <textarea placeholder="Write your bio here..."></textarea>
     </div>
-
+     -->
     <div class="stats-box">
       <div class="stat-card">
-        <h3>10</h3>
+        <h3 id="stat-card-totalCourses">10</h3>
         <p>Total Courses</p>
       </div>
       <div class="stat-card">
-        <h3>4</h3>
+        <h3>Soon</h3>
         <p>Completed Courses</p>
       </div>
       <div class="stat-card">
-        <h3>25</h3>
+        <h3>Soon</h3>
         <p>Hours Learned</p>
       </div>
     </div>
@@ -60,7 +69,7 @@
         <p>EXP Points</p>
       </div>
       <div class="streak-card">
-        <h3 id="streakCount">0</h3>
+        <h3 id="streakCount">Soon</h3>
         <p>Streak Days</p>
       </div>
     </div>
@@ -69,44 +78,18 @@
   <div class="change-password-container" id="changePasswordSection">
     <div class="change-password-form">
       <h3>Change Password</h3>
-      <input type="email" placeholder="Enter your email">
-      <input type="password" placeholder="New Password">
-      <input type="password" placeholder="Confirm Password">
-      <button>Save Password</button>
+      <input type="password" id="new-password" placeholder="New Password">
+      <input type="password" id="confirm-password" placeholder="Confirm Password">
+      <button id="submitPasswordChange">Save Password</button>
     </div>
   </div>
 
   <div class="courses-container" id="coursesSection">
-    <div class="course-card">
-      <img src="assets/img/aaa.png" alt="Course Image">
-      <div class="course-details">
-        <h4>Course 1</h4>
-        <p>Learn basics of programming.</p>
-        <div class="progress-bar"><div class="progress-fill" style="width:50%"></div></div>
-        <p>Videos: 5/10 | Hours: 2/5</p>
-      </div>
-    </div>
-    <div class="course-card">
-      <img src="assets/img/aaa.png" alt="Course Image">
-      <div class="course-details">
-        <h4>Course 2</h4>
-        <p>Advanced JavaScript techniques.</p>
-        <div class="progress-bar"><div class="progress-fill" style="width:40%"></div></div>
-        <p>Videos: 8/20 | Hours: 4/10</p>
-      </div>
-    </div>
-    <div class="course-card">
-      <img src="assets/img/aaa.png" alt="Course Image">
-      <div class="course-details">
-        <h4>Course 3</h4>
-        <p>Web Development Full Stack.</p>
-        <div class="progress-bar"><div class="progress-fill" style="width:20%"></div></div>
-        <p>Videos: 2/10 | Hours: 1/5</p>
-      </div>
-    </div>
+    
   </div>
+  
 </div>
 
-<script src="assets/js/profile.js"></script>
+<script src="../js/profile.js" type="module"></script>
 </body>
 </html>

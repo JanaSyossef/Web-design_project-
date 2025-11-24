@@ -63,7 +63,7 @@ body {
   padding: 12px 20px;
   background: #fff;
   color: #4f46e5;
-  border: 1px solid #4f46e5;
+  border: 0;
   border-radius: 8px;
   cursor: pointer;
   display: flex;
@@ -77,6 +77,10 @@ body {
 .sidebar .notification-btn:hover {
   background: #f0f0ff;
   color: #4338ca;
+}
+
+.sidebar-footer{
+  margin-top: auto;
 }
 
 .burger {
@@ -125,7 +129,7 @@ body {
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   position: relative;
   transition: transform 0.3s;
-  margin-top: 45px;
+  margin-top: 25px;
 }
 
 .profile-photo img {
