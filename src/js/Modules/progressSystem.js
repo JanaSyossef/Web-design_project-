@@ -1,5 +1,5 @@
 // Complete Progress System:
-//  trackProgress, XP, streaks, certificates, exercises, notifications (PERSISTENT)
+// trackProgress, XP, streaks, certificates, exercises, notifications (PERSISTENT)
 
 import { courseList } from './courseSystem.js';
 
@@ -20,39 +20,82 @@ let exercisesList = loadExercises() || [];
 let notificationList = loadNotifications() || []; // in memory list for notifications
 
 //  Load & Save Helpers
+/**
+ * Load progress from localStorage
+ * @returns {Array<{userId: number|string, courseId: number|string, progress: number, updatedAt: string}>}
+ */
 function loadProgress() { try { return JSON.parse(localStorage.getItem(STORAGE_KEY_PROGRESS)) || []; } catch (e) { return []; } }
+/**
+ * Save progress to localStorage
+ */
 function saveProgress() { localStorage.setItem(STORAGE_KEY_PROGRESS, JSON.stringify(progressList)); }
 
+/**
+ * Load certificates from localStorage
+ * @returns {Array<{userId: number|string, courseId: number|string, issuedAt: string, certificateId: string}>}
+ */
 function loadCertificates() { try { return JSON.parse(localStorage.getItem(STORAGE_KEY_CERTIFICATES)) || []; } catch (e) { return []; } }
+/**
+ * Save certificates to localStorage
+ */
 function saveCertificates() { localStorage.setItem(STORAGE_KEY_CERTIFICATES, JSON.stringify(certificates)); }
 
+/**
+ * Load streaks from localStorage
+ * @returns {Array<{userId: number|string, count: number, lastDate: string}>}
+ */
 function loadStreaks() { try { return JSON.parse(localStorage.getItem(STORAGE_KEY_STREAKS)) || []; } catch (e) { return []; } }
+/**
+ * Save streaks to localStorage
+ */
 function saveStreaks() { localStorage.setItem(STORAGE_KEY_STREAKS, JSON.stringify(streaks)); }
 
+/**
+ * Load XP from localStorage
+ * @returns {Array<{userId: number|string, points: number}>}
+ */
 function loadXP() { try { return JSON.parse(localStorage.getItem(STORAGE_KEY_XP)) || []; } catch (e) { return []; } }
+/**
+ * Save XP to localStorage
+ */
 function saveXP() { localStorage.setItem(STORAGE_KEY_XP, JSON.stringify(xpList)); }
 
+/**
+ * Load exercises from localStorage
+ * @returns {Array<{id: number, courseId: number|string, topic: string, [key: string]: any}>}
+ */
 function loadExercises() { try { return JSON.parse(localStorage.getItem(STORAGE_KEY_EXERCISES)) || []; } catch (e) { return []; } }
+/**
+ * Save exercises to localStorage
+ */
 function saveExercises() { localStorage.setItem(STORAGE_KEY_EXERCISES, JSON.stringify(exercisesList)); }
 
-// Notification Load/Save Helpers
+/**
+ * Load notifications from localStorage
+ * @returns {Array<AppNotification>}
+ */
 function loadNotifications() { try { return JSON.parse(localStorage.getItem(STORAGE_KEY_NOTIFICATIONS)) || []; } catch (e) { return []; } }
+/**
+ * Save notifications to localStorage
+ */
 function saveNotifications() { localStorage.setItem(STORAGE_KEY_NOTIFICATIONS, JSON.stringify(notificationList)); }
 
-
-//  Notification
+// Notification
+/**
+ * Show a temporary notification and save it persistently
+ * @param {string} message - The message to show
+ * @param {"success"|"error"|"info"} [type="info"] - Type of notification
+ */
 function showNotification(message, type = "info") {
-  // 1. SAVE TO LIST: Create and save the persistent notification record
   const newNotification = {
-    id: Date.now(), // Unique ID
-    message: message,
-    type: type,
+    id: Date.now(),
+    message,
+    type,
     timestamp: new Date().toISOString(),
-    isRead: false, // Starts as unread
+    isRead: false,
   };
-
   notificationList.push(newNotification);
-  saveNotifications(); // Save the updated list to localStorage
+  saveNotifications();
 
   const CONTAINER_ID = "cp-notification-stack";
   let container = document.getElementById(CONTAINER_ID);
@@ -89,71 +132,78 @@ function showNotification(message, type = "info") {
   }, 3000);
 }
 
-//  XP Functions
+// XP Functions
+/**
+ * Update user's XP
+ * @param {number|string} userId - User ID
+ * @param {number} amount - XP amount to add
+ * @returns {number|null} Updated XP or null if invalid
+ */
 export function updateXP(userId, amount) {
-  // 1. Check if amount is a number
-  if (typeof amount !== "number" || isNaN(amount)) {
-    return null;
-  }
+  if (typeof amount !== "number" || isNaN(amount)) return null;
+  if (amount < 0) return null;
 
-  // 2. Check if amount is negative
-  if (amount < 0) {
-    return null;
-  }
-
-  // 3. Find the user's XP record
   let userXP = xpList.find(x => x.userId === userId);
+  if (userXP) userXP.points += amount;
+  else { userXP = { userId, points: amount }; xpList.push(userXP); }
 
-  // 4. Update or create XP record
-  if (userXP) {
-    userXP.points += amount;
-  } else {
-    userXP = { userId, points: amount };
-    xpList.push(userXP);
-  }
-
-  // 5. Save changes
   saveXP();
-
-  // 6. Show success message (This will now also save the notification record)
   showNotification(`🎉 You earned ${amount} XP Total: ${userXP.points}`, "success");
-
   return userXP.points;
 }
 
+/**
+ * Get user's current XP
+ * @param {number|string} userId
+ * @returns {number}
+ */
 export function getUserXP(userId) {
   const userXP = xpList.find(x => x.userId === userId);
   return userXP ? userXP.points : 0;
 }
 
-//  Track Progress
+// Track Progress
+/**
+ * Track user progress in a course
+ * @param {number|string} userId
+ * @param {number|string} courseId
+ * @param {number} progress - 0 to 100
+ * @returns {{userId: number|string, courseId: number|string, progress: number, updatedAt: string}|null}
+ */
 export function trackProgress(userId, courseId, progress) {
-  if (userId == null || courseId == null) { return null; }
-  if (progress < 0 || progress > 100) { return null; }
+  if (userId == null || courseId == null) return null;
+  if (progress < 0 || progress > 100) return null;
 
   const now = new Date().toISOString();
   let rec = progressList.find(p => p.userId === userId && p.courseId === courseId);
-  
-  // Get old progress for XP calculation
   const oldProgress = rec ? rec.progress : 0;
-  
+
   if (rec) { rec.progress = progress; rec.updatedAt = now; }
   else { rec = { userId, courseId, progress, updatedAt: now }; progressList.push(rec); }
 
   saveProgress();
   updateStreak(userId);
 
-  // Auto XP for progress (optional: 1 XP per %)
   const xpEarned = progress - oldProgress;
   if (xpEarned > 0) updateXP(userId, xpEarned);
 
   return rec;
 }
 
-// Get progress for a user/course
+/**
+ * Get progress for a user in a course
+ * @param {number|string} userId
+ * @param {number|string} courseId
+ * @returns {{userId: number|string, courseId: number|string, progress: number, updatedAt: string}|null}
+ */
 export function getProgress(userId, courseId) { return progressList.find(p => p.userId === userId && p.courseId === courseId) || null; }
 
-// Generate Certificate
+/**
+ * Generate certificate for a user
+ * @param {number|string} userId
+ * @param {number|string} courseId
+ * @returns {{userId: number|string, courseId: number|string, issuedAt: string, certificateId: string}|null}
+ */
 export function generateCertificate(userId, courseId) {
   const rec = getProgress(userId, courseId);
   if (!rec || rec.progress < 100) return null;
@@ -166,29 +216,34 @@ export function generateCertificate(userId, courseId) {
   return cert;
 }
 
-// Streak tracking
+/**
+ * Update streak for a user
+ * @param {number|string} userId
+ * @returns {{userId: number|string, count: number, lastDate: string}}
+ */
 export function updateStreak(userId) {
   let s = streaks.find(st => st.userId === userId);
   const today = new Date().toDateString();
   const yesterday = new Date(Date.now() - 86400000).toDateString();
   if (!s) { s = { userId, count: 1, lastDate: today }; streaks.push(s); }
-  else if (s.lastDate === today) { } // already logged today
+  else if (s.lastDate === today) { }
   else if (s.lastDate === yesterday) { s.count++; s.lastDate = today; }
   else { s.count = 1; s.lastDate = today; }
   saveStreaks();
   return s;
 }
 
-// Exercises with error handling
+// Exercises
+/**
+ * Add an exercise to a course
+ * @param {number|string} courseId
+ * @param {string} topic
+ * @param {Object} exerciseData
+ * @returns {Object|null}
+ */
 export function addExercise(courseId, topic, exerciseData) {
-  // Validate courseId exists in the course system before proceeding
   const courseExists = courseList.some(c => c.id === courseId);
-  if (!courseExists) {
-    showNotification("❌ Course ID not found. Exercise not added.", "error");
-    return null;
-  }
-
-
+  if (!courseExists) { showNotification("❌ Course ID not found. Exercise not added.", "error"); return null; }
   const id = exercisesList.length ? Math.max(...exercisesList.map(e => e.id)) + 1 : 1;
   const ex = { id, courseId, topic, ...exerciseData, createdAt: new Date().toISOString() };
   exercisesList.push(ex);
@@ -197,93 +252,80 @@ export function addExercise(courseId, topic, exerciseData) {
   return ex;
 }
 
+/**
+ * List exercises for a course and optional topic
+ * @param {number|string} courseId
+ * @param {string|null} [topic=null]
+ * @returns {Array<Object>}
+ */
 export function listExercises(courseId, topic = null) {
   const courseExists = courseList.some(c => c.id === courseId);
-  if (!courseExists) {
-    showNotification("❌ Course ID not found. Cannot list exercises.", "error");
-    return [];
-  }
+  if (!courseExists) { showNotification("❌ Course ID not found. Cannot list exercises.", "error"); return []; }
   return exercisesList.filter(e => e.courseId === courseId && (topic ? e.topic === topic : true));
 }
 
-// User Progress
+/**
+ * Get all progress of a user
+ * @param {number|string} userId
+ * @returns {Array<Object>}
+ */
 export function getUserProgress(userId) { return progressList.filter(p => p.userId === userId); }
+/**
+ * List all progress records
+ * @returns {Array<Object>}
+ */
 export function listAllProgress() { return progressList; }
-/*
-* @param {number} courseId - ID
-@returns {boolean} 
+
+/**
+ * Cleanup all data related to a course
+ * @param {number|string} courseId
+ * @returns {boolean} True if any data removed
  */
 export function cleanupCourseData(courseId) {
-    let updated = false;
+  let updated = false;
+  const initialProgressLength = progressList.length;
+  progressList = progressList.filter(p => p.courseId !== courseId);
+  if (progressList.length < initialProgressLength) { saveProgress(); updated = true; }
 
-    const initialProgressLength = progressList.length;
-    progressList = progressList.filter(p => p.courseId !== courseId);
-    if (progressList.length < initialProgressLength) {
-        saveProgress();
-        updated = true;
-    }
- 
-    const initialCertificatesLength = certificates.length;
-    certificates = certificates.filter(c => c.courseId !== courseId);
-    if (certificates.length < initialCertificatesLength) {
-        saveCertificates();
-        updated = true;
-    }
-    
-    return updated;
+  const initialCertificatesLength = certificates.length;
+  certificates = certificates.filter(c => c.courseId !== courseId);
+  if (certificates.length < initialCertificatesLength) { saveCertificates(); updated = true; }
+
+  return updated;
 }
-//  Notification Management Functions 
+
+// Notifications
 /**
  * @typedef {Object} AppNotification
- * @property {number} id - Unique timestamp ID
- * @property {string} message - Content of the notification
- * @property {string} type - 'success', 'error', or 'info'
- * @property {string} timestamp - ISO date string
- * @property {boolean} isRead - Read status
+ * @property {number} id
+ * @property {string} message
+ * @property {"success"|"error"|"info"} type
+ * @property {string} timestamp
+ * @property {boolean} isRead
  */
 
 /**
- * Retrieves the list of stored notifications (newest first)
+ * Get all notifications (newest first)
  * @returns {AppNotification[]}
  */
-export function getNotifications() {
-  // Return a sorted copy of the list (newest first)
-  return [...notificationList].sort((a, b) => b.id - a.id);
-}
-
+export function getNotifications() { return [...notificationList].sort((a, b) => b.id - a.id); }
 /**
- * Gets the count of unread notifications (the red number).
+ * Get count of unread notifications
  * @returns {number}
  */
-export function getUnreadCount() {
-  return notificationList.filter(n => !n.isRead).length;
-}
+export function getUnreadCount() { return notificationList.filter(n => !n.isRead).length; }
 
 /**
- * Marks a specific notification or all notifications as read.
- * @param {number | null} notificationId  The ID of the notification to update, or null to update all
+ * Mark notification(s) as read
+ * @param {number|null} [notificationId=null] - Specific notification ID or null for all
  */
 export function markAsRead(notificationId = null) {
   let updated = false;
-
   if (notificationId) {
-    const notification = notificationList.find(n => n.id === notificationId);
-    if (notification && !notification.isRead) {
-      notification.isRead = true;
-      updated = true;
-    }
+    const n = notificationList.find(n => n.id === notificationId);
+    if (n && !n.isRead) { n.isRead = true; updated = true; }
   } else {
-
-    // Mark all as read
-    notificationList.forEach(n => {
-      if (!n.isRead) {
-        n.isRead = true;
-        updated = true;
-      }
-    });
+    notificationList.forEach(n => { if (!n.isRead) { n.isRead = true; updated = true; } });
   }
-
-  if (updated) {
-    saveNotifications();
-  }
+  if (updated) saveNotifications();
 }
