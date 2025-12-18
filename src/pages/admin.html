@@ -22,6 +22,7 @@
       <nav class="nav">
         <a class="nav-item active" data-section="overview">Overview</a>
         <a class="nav-item" data-section="courses">Courses</a>
+        <a class="nav-item" data-section="course-settings">Course Settings</a>
         <a class="nav-item" data-section="instructors">Instructors</a>
         <a class="nav-item" data-section="students">Students</a>
         <a class="nav-item" data-section="payments">Payments</a>
@@ -115,6 +116,27 @@
                 <th>Rating</th>
                 <th>Status</th>
                 <th></th>
+              </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+          </table>
+        </div>
+
+         <!-- Course Setting page -->
+        <div class="page hidden" id="course-settings">
+          <h2>Course Settings</h2>
+          <div class="controls">
+            <button class="btn" id="courseSettingBtn">Choose a Course</button>
+            <button class="btn" id="courseVideoBtn">Add Videos</button>
+          </div>
+          <div class="courseTitleName page hidden"></div>
+          <table class="table" id="courseSettingTable">
+            <thead>
+              <tr>
+                <th>Video Title</th>
+                <th>Video URL</th>
               </tr>
             </thead>
             <tbody>

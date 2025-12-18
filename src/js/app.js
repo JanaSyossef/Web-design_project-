@@ -9,6 +9,7 @@ import { getCurrentUser } from "./Modules/userSystem.js"
 import { logout } from "./Modules/userSystem.js"
 import { ExploreSystem } from"./Modules/ExploreSystem.js"
 import { getCourse, courseDeletion } from "./Modules/courseSystem.js"
+import { CourseInformation, courseVideos, createVideo } from "./Modules/CourseInformation.js"
 
 
 if(getCurrentUser() != null){
@@ -102,7 +103,6 @@ const RecentActivities = {
 };
 
 
-
 // Mock data and simple UI logic for the admin mockup
 const state = {
   students: 0,
@@ -111,7 +111,8 @@ const state = {
   users: listUsers(),
   activities: [],
   payments: [],
-  reviews: []
+  reviews: [],
+  courseVideos: courseVideos
 }
 
 
@@ -120,6 +121,9 @@ let admins = (state.users.filter((v) => v.role == `admin`))
 state.instructors = (state.users.filter((v) => v.role == `admin`))
 
 state.students = (state.users.length) - (admins.length)
+
+
+let courseChooser = 0;
 
 
 // DOM helpers
@@ -165,7 +169,7 @@ function renderAdminPage(){
   // render courses in courses tab
   const coursesbody = $('#allCoursesTable tbody')
   coursesbody.innerHTML = ''
-  let courses = ExploreSystem.searchCourses(state.courses, query); // Search function here later
+  let courses = ExploreSystem.searchCourses(state.courses, query);
   courses.forEach(c => {
     const tr = document.createElement('tr')
     tr.innerHTML = `
@@ -180,6 +184,30 @@ function renderAdminPage(){
     `
     coursesbody.appendChild(tr)
   })
+
+  //render courseVideos in course settings tab
+
+
+  const courseTitleName = $('.courseTitleName')
+  const courseVideoTitle = state.courses.find(c => c.id === parseInt(courseChooser)) || {};
+  courseTitleName.innerHTML = `
+    <h2>${courseVideoTitle.title}</h2>
+  `;
+  courseTitleName.classList.add('hidden')
+
+  const coursebody = $('#courseSettingTable tbody')
+  coursebody.innerHTML = '';
+  let course = state.courseVideos.find(c => c.id === courseChooser) || [];
+  if(course.videos !== undefined){
+    course.videos.forEach(v => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${v.videoTitle}</td>
+        <td>${v.videoURL}</td>
+      `
+      coursebody.appendChild(tr)
+    })
+  }
 
   // render instructors in instructors tab
   const instructorsbody = $('#instructorsTable tbody')
@@ -379,8 +407,31 @@ function addNewCourse(title, instructorName, category,price, duration, descripti
   debouncedRender()
 }
 
+
+function addNewVideo(title, url) {
+
+  createVideo(courseChooser, url, title);
+
+  debouncedRender()
+}
+
+
+
+
+
+
 // Event listener for new course button
 $('#newCourseBtn').addEventListener('click', AddCourseModal);
+$('#courseSettingBtn').addEventListener('click', ChooseCourseModal);
+$('#courseVideoBtn').addEventListener('click', (e) =>{
+  e.preventDefault();
+  if(courseChooser === 0){
+    return;
+  }else{
+    AddVideoModal()
+  }
+});
+
 
 
 // Modal Form that pops up
@@ -483,6 +534,123 @@ function AddCourseModal() {
   });
 
 }
+
+
+// Video Adding Modal
+
+function AddVideoModal() {
+  const modal = document.createElement('div');
+  modal.className = 'modal';
+  modal.innerHTML = `
+    <div class="modal-content">
+      <h2>Add New Video</h2>
+      <form id="addVideoForm">
+        <div class="form-group">
+          <label for="videoTitle">Video Title:</label>
+          <input type="text" id="videoTitle" required>
+        </div>
+
+
+        <div class="form-group">
+          <label for="videoURL">URL:</label>
+          <input type="text" id="videoURL" required>
+        </div>
+        
+        <div class="form-actions">
+          <button type="button" class="cancel btn danger">Cancel</button>
+          <button type="submit" class="btn primary">Add Course</button>
+        </div>
+      </form>
+    </div>
+  `;
+  
+  document.body.appendChild(modal);
+
+  // Can't $ since this is from the modal, not the document
+  modal.querySelector('.cancel').addEventListener('click', () => {
+    document.body.removeChild(modal);
+  });
+
+  modal.querySelector('#addVideoForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const title = document.getElementById('videoTitle').value;
+    const url = document.getElementById('videoURL').value;
+
+    if (title && url) {
+      addNewVideo(title, url);
+      RecentActivities.push(`New Video Added. (${title})`)
+      document.body.removeChild(modal);
+    }
+  });
+  
+  // Close modal when clicking outside
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) {
+      document.body.removeChild(modal);
+    }
+  });
+
+}
+
+
+
+// Course Setting Modal
+
+function ChooseCourseModal() {
+  const modal = document.createElement('div');
+  modal.className = 'modal';
+  modal.innerHTML = `
+    <div class="modal-content">
+      <h2>Choose a course</h2>
+      <form id="courseSettingForm">        
+        <div class="form-group">
+          <label for="course">Course:</label>
+          <select id="course" required>
+            <option value="">Select a course</option>
+            ${state.courses.map(c => 
+              `<option value="${c.id}">${c.title}</option>`
+            ).join('')}
+          </select>
+        </div>
+        
+        <div class="form-actions">
+          <button type="button" class="cancel btn danger">Cancel</button>
+          <button type="submit" class="btn primary">Done</button>
+        </div>
+      </form>
+    </div>
+  `;
+  
+  document.body.appendChild(modal);
+
+  // Can't $ since this is from the modal, not the document
+  modal.querySelector('.cancel').addEventListener('click', () => {
+    document.body.removeChild(modal);
+  });
+
+  modal.querySelector('#courseSettingForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    let courseID = document.getElementById('course').value;
+    
+    courseChooser = courseID
+
+    document.body.removeChild(modal);
+
+    synchronization_render()
+  });
+  
+  // Close modal when clicking outside
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) {
+      document.body.removeChild(modal);
+    }
+  });
+
+}
+
+
+
 
 // Remove Function (Courses)
 function removeSpecificCourse(courseId) {
